@@ -1,0 +1,23 @@
+# https://skaffold.dev/docs/references/yaml/
+---
+apiVersion: skaffold/v2beta4
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./traefik/00-crds.yaml
+
+---
+apiVersion: skaffold/v2beta18
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./traefik/*.yaml
+      - ./whoami/*.yaml
+portForward:
+  - resourceName: traefik
+    resourceType: Service
+    port: 80
+    localPort: 4000
+    namespace: traefik
